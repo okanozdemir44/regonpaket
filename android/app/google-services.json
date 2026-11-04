@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "257877745427",
+    "project_id": "doydoydonerr-dff45",
+    "storage_bucket": "doydoydonerr-dff45.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:257877745427:android:762fb1bd753941357204e6",
+        "android_client_info": {
+          "package_name": "com.regon.paket"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4UNGfJ5JJVotKCNO8KiN0jCnc6EvxPEs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

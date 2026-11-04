@@ -1,0 +1,20 @@
+{
+  "name": "Regon Paket",
+  "short_name": "Regon",
+  "description": "Restoran kasa ve kurye takip uygulaması",
+  "start_url": "/kurye",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0c0f12",
+  "theme_color": "#0c0f12",
+  "lang": "tr",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Capacitor APK için statik HTML/JS/CSS çıktısı (`out/`)
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+  // Client-side localStorage auth + realtime paneller için Cache Components
+  // instant doğrulaması gereksiz gürültü/hydration üretir; kapalı tutulur.
   turbopack: {
     rules: {
       "*.css": {

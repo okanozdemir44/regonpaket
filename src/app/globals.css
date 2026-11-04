@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0c0f12;
+  --foreground: #f4f1ea;
+  --login-ink: #f7f3eb;
+  --login-muted: #9aa3ad;
+  --login-card: rgba(22, 27, 34, 0.82);
+  --login-accent: #f0a202;
+  --panel-bg: #0c0f12;
+  --panel-sidebar: #12171e;
+  --panel-ink: #f4f1ea;
+  --panel-muted: #9aa3ad;
+  --brand-primary: #f59e0b;
+  --brand-secondary: #10b981;
+  --panel-accent: var(--brand-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-sans: var(--font-body);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-shell {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(240, 162, 2, 0.18), transparent 55%),
+    radial-gradient(900px 500px at 100% 20%, rgba(45, 112, 140, 0.22), transparent 50%),
+    linear-gradient(165deg, #0a0d11 0%, #121820 45%, #0c0f12 100%);
+}
+
+.login-glow {
+  pointer-events: none;
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.55;
+  animation: login-float 10s ease-in-out infinite;
+}
+
+.login-glow-a {
+  top: 12%;
+  left: -8%;
+  width: 280px;
+  height: 280px;
+  background: rgba(240, 162, 2, 0.35);
+}
+
+.login-glow-b {
+  right: -6%;
+  bottom: 8%;
+  width: 320px;
+  height: 320px;
+  background: rgba(56, 130, 160, 0.28);
+  animation-delay: -4s;
+}
+
+.login-grid {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+  opacity: 0.5;
+}
+
+.login-brand {
+  animation: login-brand-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes login-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(12px, -18px, 0) scale(1.05);
+  }
+}
+
+@keyframes login-brand-in {
+  from {
+    opacity: 0;
+    letter-spacing: 0.12em;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    letter-spacing: -0.02em;
+    transform: translateY(0);
+  }
+}
+
+@keyframes login-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-login-in {
+  animation: login-in 0.35s ease-out both;
+}
+
+.field-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0.75rem 1rem;
+  color: var(--panel-ink);
+  outline: none;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.field-input:focus {
+  border-color: color-mix(in oklab, var(--panel-accent) 60%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--panel-accent) 20%, transparent);
+}
+
+.field-input:disabled {
+  cursor: not-allowed;
+}
+
+/* Leaflet marker wrapper — default white square gizle */
+.regon-map-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-container {
+  font: inherit;
+  background: #0e1319;
+}
+
+/* Harita karolarını koyu panelle uyumlu hale getir; marker/popup etkilenmez */
+.leaflet-tile-pane {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
