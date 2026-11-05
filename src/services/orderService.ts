@@ -132,12 +132,27 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
   return created;
 }
 
-/** Siparişe kurye atar; status = assigned, assigned_at mühürlenir. */
+/** Siparişe kurye atar; status = assigned, assigned_at mühürlenir.
+ * Devretmede eski kuryeye de push gider.
+ */
 export async function assignCourier(
   orderId: number | string,
   courierId: string
 ): Promise<Order> {
   const now = new Date().toISOString();
+
+  const { data: before, error: beforeError } = await supabase
+    .from("packages")
+    .select("id, courier_id, order_number, customer_name, delivery_address")
+    .eq("id", orderId)
+    .maybeSingle();
+
+  if (beforeError) throw new Error(beforeError.message || "Paket okunamadı");
+
+  const previousCourierId =
+    before?.courier_id && before.courier_id !== courierId
+      ? (before.courier_id as string)
+      : null;
 
   const { data, error } = await supabase
     .from("packages")
@@ -170,14 +185,39 @@ export async function assignCourier(
     .update({ status: nextStatus })
     .eq("id", courierId);
 
-  void notifyCourierNewPackage({
-    courier_id: courierId,
-    fcm_token: (courierRow?.fcm_token as string | null) ?? null,
-    title: "Yeni Sipariş Atandı!",
-    order_number: order.order_number,
-    customer_name: order.customer_name,
-    delivery_address: order.delivery_address,
-  });
+  const orderNo = order.order_number || String(order.id);
+  const customer = order.customer_name || "Müşteri";
+
+  // Devretme: önceki kuryeye bildir
+  if (previousCourierId) {
+    void notifyCourierNewPackage({
+      courier_id: previousCourierId,
+      title: "Paket Üzerinizden Alındı",
+      body: `#${orderNo} · ${customer} — paket başka bir kuryeye devredildi`,
+      order_number: order.order_number,
+      customer_name: order.customer_name,
+      delivery_address: order.delivery_address,
+    });
+
+    void notifyCourierNewPackage({
+      courier_id: courierId,
+      fcm_token: (courierRow?.fcm_token as string | null) ?? null,
+      title: "Paket Size Devredildi!",
+      body: `#${orderNo} · ${customer} — üzerinize yeni paket aktarıldı`,
+      order_number: order.order_number,
+      customer_name: order.customer_name,
+      delivery_address: order.delivery_address,
+    });
+  } else {
+    void notifyCourierNewPackage({
+      courier_id: courierId,
+      fcm_token: (courierRow?.fcm_token as string | null) ?? null,
+      title: "Yeni Sipariş Atandı!",
+      order_number: order.order_number,
+      customer_name: order.customer_name,
+      delivery_address: order.delivery_address,
+    });
+  }
 
   return order;
 }
