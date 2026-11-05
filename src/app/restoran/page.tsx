@@ -294,11 +294,11 @@ export default function CanliOperasyonPage() {
 
 function SummaryCard({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-2xl border border-white/8 bg-white/[0.03] px-3 py-3 sm:px-4 sm:py-4">
-      <p className="text-[10px] uppercase tracking-wider text-[var(--panel-muted)] sm:text-xs">
+    <div className="rounded-xl border border-white/8 bg-white/[0.03] px-2.5 py-2 sm:px-3 sm:py-2.5">
+      <p className="text-[9px] uppercase tracking-wider text-[var(--panel-muted)] sm:text-[10px]">
         {label}
       </p>
-      <p className="mt-0.5 font-[family-name:var(--font-display)] text-2xl tabular-nums sm:mt-1 sm:text-3xl">
+      <p className="mt-0.5 font-[family-name:var(--font-display)] text-lg leading-none tabular-nums sm:text-xl">
         {value}
       </p>
     </div>
